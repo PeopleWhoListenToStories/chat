@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    Function.prototype.myBind = function (context) {
+      // 判断是否是undefined和null
+      if (typeof context === "undefined" || context === null) {
+        context = window;
+      }
+      self = this;
+      return function (...args) {
+        console.log(args,'args')
+        return self.apply(context, args);
+      }
+    }
+    Function.prototype.myBind(1)
+  </script>
+</body>
+
+</html>
