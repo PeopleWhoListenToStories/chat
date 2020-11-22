@@ -2,29 +2,35 @@
 import React, { Fragment, useEffect,useState} from "react";
 import styled from "styled-components";
 import { useObserver } from "mobx-react-lite";
-import { Button, WhiteSpace } from "antd-mobile";
+import { Button,   Icon,   WhiteSpace } from "antd-mobile";
 import useStore from "../context/useStore";
 import {withRouter} from "react-router-dom"
 import socket from  "../utils/socket"
-
+ 
 const UserViewCom: React.FC = (props: any) => {
-  const  [isReady,setIsReady] = useState<boolean>(false)
-
+  const [isReady,setIsReady] = useState<boolean>(false)
+  const [pokerList,setPokerList] = useState<any>([])
   const { Poker, Login } = useStore();
+
   useEffect(() => {
     socket.on('readyOkRes',(res:any)=>{
+      console.log(res,'readyOkRes')
       setIsReady(res.isReady)
+      if(res.isStart){
+        setPokerList(res.outPokerList[(sessionStorage as any).getItem('user') ])
+      }
     })
-  } )
+  })
+
   function play() {
-    Poker.createOrder({ room_id: props.match.params.id });
     socket.emit('readyOk', { user_id:Login.userInfo.user_id })
   }
+
   return useObserver(() => (
     <UserViewWrapper>
       <InnerDiv>
-        {Poker.pokerList.length ? (
-          Poker.pokerList.map((item: any, index: number) => {
+        {pokerList.length ? (
+          pokerList.map((item: any, index: number) => {
             return (
               <PokerCard key={index}>
                 <CardNum style={{ color:`${item.type === 1 || item.type === 4 ? 'red' : 'black'}`}}>{item.pokerStatus}</CardNum>
@@ -37,7 +43,6 @@ const UserViewCom: React.FC = (props: any) => {
                   backgroundSize: "cover",
                 }}
               ></li>
-               
               </PokerCard>
             );
           })
@@ -80,7 +85,7 @@ const UserViewCom: React.FC = (props: any) => {
         )}
       </InnerDiv>
       <Button
-        icon="check-circle-o"
+        icon={isReady ? 'loading' : "check-circle-o"}
         size="small"
         style={{
           position: "relative",
@@ -92,9 +97,13 @@ const UserViewCom: React.FC = (props: any) => {
         disabled={isReady}
         onClick={() => play()}
       >
-        {isReady ? "进行中" : "准备"}
+        {isReady ? "等待中" : "准备"}
       </Button>
       <WhiteSpace />
+      <UserInfo>
+       <Icon type="loading" size="sm" />
+        {Login.userInfo.user}
+        </UserInfo>
     </UserViewWrapper>
   ));
 };
@@ -146,4 +155,11 @@ const CardNums = styled.span`
   bottom:0;
   right:0;
   transform: rotateZ(180deg);
+`;
+
+const UserInfo = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

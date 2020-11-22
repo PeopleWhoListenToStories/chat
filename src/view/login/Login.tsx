@@ -8,7 +8,7 @@ import socket from "../../utils/socket"
 import {Toast} from "antd-mobile"
 
 const Login: React.FC = () => {
-  const [userOrder, setUserOrder] = useState<string>("admin");
+  const [userOrder, setUserOrder] = useState<string>("666");
   const [pwdOrder, setPwdOrder] = useState<string>("admin");
 
   const {Login} = useStore()

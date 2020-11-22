@@ -16,7 +16,7 @@ const Main: React.FC = (props: any) => {
   const [count, setCount] = useState<number>(0);
 
   const history = useHistory();
-  const { Login } = useStore();
+  const { Login, Poker } = useStore();
   useEffect(() => {
     if (count === 0) {
       socket.emit("roomInfo", {});
@@ -59,17 +59,17 @@ const Main: React.FC = (props: any) => {
             <Tag>{dataItem.isFull ? "满" : ""}</Tag>
             <div
               style={{ padding: "0.125rem" }}
-              onClick={() => ClickToPoker(index + 1)}
+              onClick={() => ClickToPoker(dataItem.room_id)}
             >
               <img
                 src={dataItem.url}
-                style={{ width: "1rem", height: "1rem" }}
+                style={{ width: ".8rem", height: ".8rem" }}
                 alt=""
               />
               <div
                 style={{ color: "#888", fontSize: "14px", marginTop: "0.12rem" }}
               >
-                <span>房间{index + 1}</span>
+                <span>{dataItem.name}</span>
               </div>
             </div>
           </Fragment>
