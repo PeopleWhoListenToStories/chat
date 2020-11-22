@@ -8,22 +8,29 @@ import {withRouter} from "react-router-dom"
 import socket from  "../utils/socket"
  
 const UserViewCom: React.FC = (props: any) => {
-  const  [isReady,setIsReady] = useState<boolean>(false)
+  const [isReady,setIsReady] = useState<boolean>(false)
+  const [pokerList,setPokerList] = useState<any>([])
   const { Poker, Login } = useStore();
+
   useEffect(() => {
     socket.on('readyOkRes',(res:any)=>{
+      console.log(res,'readyOkRes')
       setIsReady(res.isReady)
+      if(res.isStart){
+        setPokerList(res.outPokerList[(sessionStorage as any).getItem('user') ])
+      }
     })
-  } )
+  })
+
   function play() {
-   
     socket.emit('readyOk', { user_id:Login.userInfo.user_id })
   }
+
   return useObserver(() => (
     <UserViewWrapper>
       <InnerDiv>
-        {Poker.pokerList.length ? (
-          Poker.pokerList.map((item: any, index: number) => {
+        {pokerList.length ? (
+          pokerList.map((item: any, index: number) => {
             return (
               <PokerCard key={index}>
                 <CardNum style={{ color:`${item.type === 1 || item.type === 4 ? 'red' : 'black'}`}}>{item.pokerStatus}</CardNum>
@@ -36,7 +43,6 @@ const UserViewCom: React.FC = (props: any) => {
                   backgroundSize: "cover",
                 }}
               ></li>
-               
               </PokerCard>
             );
           })
@@ -79,7 +85,7 @@ const UserViewCom: React.FC = (props: any) => {
         )}
       </InnerDiv>
       <Button
-        icon="check-circle-o"
+        icon={isReady ? 'loading' : "check-circle-o"}
         size="small"
         style={{
           position: "relative",
@@ -91,7 +97,7 @@ const UserViewCom: React.FC = (props: any) => {
         disabled={isReady}
         onClick={() => play()}
       >
-        {isReady ? "进行中" : "准备"}
+        {isReady ? "等待中" : "准备"}
       </Button>
       <WhiteSpace />
       <UserInfo>

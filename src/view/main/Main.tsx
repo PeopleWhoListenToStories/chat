@@ -16,7 +16,7 @@ const Main: React.FC = (props: any) => {
   const [count, setCount] = useState<number>(0);
 
   const history = useHistory();
-  const { Login } = useStore();
+  const { Login, Poker } = useStore();
   useEffect(() => {
     if (count === 0) {
       socket.emit("roomInfo", {});

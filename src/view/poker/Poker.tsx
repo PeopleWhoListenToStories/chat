@@ -37,9 +37,9 @@ const Poker: React.FC = (props: any) => {
     });
     socket.on("readyOkRes", (res: any) => {
       console.log(res, "readyOkRes");
-       if(res.isStart){
-        Poker.createOrder({ room_id: props.match.params.id });
-      }
+      //  if(res.isStart){
+      //   Poker.createOrder({ room_id: props.match.params.id });
+      // }
       setExitOff(res.isReady)
     });
   });
