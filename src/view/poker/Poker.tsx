@@ -12,7 +12,6 @@ import { Modal, Button, WhiteSpace, WingBlank } from "antd-mobile";
 // 引入头部组件
 import NavBarCom from "../../components/navBar/NavBar";
 import UserViewCom from "../../components/UserViewCom";
-import Login from "../login/Login";
 
 const Poker: React.FC = (props: any) => {
   const [visible, setVisible] = useState<boolean>(false);
@@ -23,8 +22,10 @@ const Poker: React.FC = (props: any) => {
     if (exitOff) {
       setVisible(true);
     } else {
-      props.history.goBack();
+      // 退出房间清除用户状态
+      socket.emit("userExitRoom", {room_id: props?.match.params.id, user_id: Login.userInfo.user_id });
       Poker.clearPokerList();
+      props.history.goBack();
     }
   }
 
@@ -36,6 +37,9 @@ const Poker: React.FC = (props: any) => {
     });
     socket.on("readyOkRes", (res: any) => {
       console.log(res, "readyOkRes");
+       if(res.isStart){
+        Poker.createOrder({ room_id: props.match.params.id });
+      }
       setExitOff(res.isReady)
     });
   });

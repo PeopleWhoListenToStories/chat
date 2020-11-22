@@ -2,14 +2,13 @@
 import React, { Fragment, useEffect,useState} from "react";
 import styled from "styled-components";
 import { useObserver } from "mobx-react-lite";
-import { Button, WhiteSpace } from "antd-mobile";
+import { Button,   Icon,   WhiteSpace } from "antd-mobile";
 import useStore from "../context/useStore";
 import {withRouter} from "react-router-dom"
 import socket from  "../utils/socket"
-
+ 
 const UserViewCom: React.FC = (props: any) => {
   const  [isReady,setIsReady] = useState<boolean>(false)
-
   const { Poker, Login } = useStore();
   useEffect(() => {
     socket.on('readyOkRes',(res:any)=>{
@@ -17,7 +16,7 @@ const UserViewCom: React.FC = (props: any) => {
     })
   } )
   function play() {
-    Poker.createOrder({ room_id: props.match.params.id });
+   
     socket.emit('readyOk', { user_id:Login.userInfo.user_id })
   }
   return useObserver(() => (
@@ -95,6 +94,10 @@ const UserViewCom: React.FC = (props: any) => {
         {isReady ? "进行中" : "准备"}
       </Button>
       <WhiteSpace />
+      <UserInfo>
+       <Icon type="loading" size="sm" />
+        {Login.userInfo.user}
+        </UserInfo>
     </UserViewWrapper>
   ));
 };
@@ -146,4 +149,11 @@ const CardNums = styled.span`
   bottom:0;
   right:0;
   transform: rotateZ(180deg);
+`;
+
+const UserInfo = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
