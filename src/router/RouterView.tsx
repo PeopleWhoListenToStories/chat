@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { IRouerItem } from "../utils/interface"
 import { getCookie } from "../utils/myCookie"
 import useStore from '../context/useStore'
+import { isConstructorDeclaration } from 'typescript';
 
 // 登录白名单
 const whileList = ['/login', '/main', '/NoFound', 'NoServer']
@@ -12,19 +14,28 @@ interface Iprops {
 }
 
 const RouterView: React.FC<Iprops> = (props) => {
+  const { Login } = useStore();
   return <Switch>
     {
       props.routes && props.routes.map(item => {
+
         // 页面重定向
         if (item.redirect) {
           return <Redirect key={item.path} from={item.path} to={item.redirect}></Redirect>
         }
         return <Route key={item.path} path={item.path} render={(props) => {
           let isPath = props.match.path;
-          // 用户登录拦截
-          if (!whileList.includes(isPath) && !getCookie('token')) {
-            props.history.replace(`/login?redirect=${encodeURIComponent(isPath)}`);
+          console.log(Login.userInfo && !Object.keys(Login.userInfo).length)
+          if(Login.userInfo && !Object.keys(Login.userInfo).length){
+            const user = sessionStorage.getItem('user')
+            if(user){
+              Login.getUserInfo({user:user})
+            }
           }
+          // 用户登录拦截
+          // if (!whileList.includes(isPath) && !getCookie('token')) {
+          //   props.history.replace(`/login?redirect=${encodeURIComponent(isPath)}`);
+          // }
 
           // 获取不到用户信息就重新获取
           // if (getCookie('token') && !Object.keys(MainStore.user_info).length) {

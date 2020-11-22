@@ -1,8 +1,10 @@
 import React, { useEffect, Suspense } from 'react';
 import './App.css';
+// 引入ui框架样式
+import 'antd-mobile/dist/antd-mobile.css'; 
+
 import { HashRouter } from 'react-router-dom';
 import RouterView from './router/RouterView';
-import { IRouerItem } from "./utils/interface"
 import useStore from './context/useStore'
 import styled from 'styled-components'
 // 配置国际化
@@ -16,14 +18,14 @@ import { useObserver } from 'mobx-react-lite';
 import routerConfig from './router/config.route'
 
 function App() {
-
   return useObserver(() => (
     <div className="App">
       <Suspense fallback={<LoadingWrapper><div>Loading profile...</div></LoadingWrapper>}>
         {/* <IntlProvider locale={Language.locale} messages={Language.defaultLanguage} > */}
           <HashRouter>
             {/* <RouterView routes={routes as IRouerItem[]} /> */}
-            <RouterView routes={routerConfig.routes }></RouterView>
+            <RouterView routes={routerConfig.routes }>
+            </RouterView>
           </HashRouter>
         {/* </IntlProvider> */}
       </Suspense>

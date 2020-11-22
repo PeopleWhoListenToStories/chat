@@ -2,7 +2,7 @@
   "name": "chat-view",
   "version": "1.1.1",
   "private": true,
-  "homepage":"/build",
+  "homepage": "/build",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@testing-library/jest-dom": "^4.2.4",
@@ -11,12 +11,14 @@
     "@types/jest": "^24.0.0",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^12.0.0",
+    "@types/nprogress": "^0.2.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/socket.io-client": "^1.4.33",
     "@types/styled-components": "^5.1.2",
     "antd": "^4.5.4",
+    "antd-mobile": "^2.3.4",
     "ants": "^0.0.3-alpha",
     "axios": "^0.19.2",
     "editor.md": "^1.5.0",
@@ -28,6 +30,7 @@
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "npm": "^6.14.8",
+    "nprogress": "^0.2.0",
     "particles-bg": "^2.5.0",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
@@ -36,7 +39,7 @@
     "react-native": "^0.63.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "socket.io-client": "^2.3.0",
+    "socket.io-client": "^2.3.1",
     "typescript": "^3.8.3",
     "xlsx": "^0.16.6"
   },
@@ -64,12 +67,15 @@
     ]
   },
   "devDependencies": {
+    "customize-cra": "^1.0.0",
     "for-editor": "^0.3.5",
+    "react-app-rewired": "^2.1.6",
     "styled-components": "^5.1.1"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "proxy": "http://127.0.0.1:7001"
 }

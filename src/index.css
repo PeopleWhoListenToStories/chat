@@ -34,6 +34,16 @@ p {
   margin-block-end: none;
 }
 
+* { touch-action: pan-y; } 
+
+#nprogress   {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: .1rem;
+  background: rgb(240, 115, 13);
+}
+
 /* .ant-table-tbody > tr > td {
   background: greenyellow !important;
 }

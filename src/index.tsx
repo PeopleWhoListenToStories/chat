@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './store/index'
 import StoreContext from './context/StroeContext'
 import 'antd/dist/antd.css';
+import "./utils/socket"
 
 //引入语言
 // import { IntlProvider } from 'react-intl';
