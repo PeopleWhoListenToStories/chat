@@ -4,35 +4,23 @@ import { action, observable } from "mobx";
 export default class Poker {
   [key: string]: any;
   @observable off: boolean = false;
-  @observable pokerList:any[] = []
+  @observable pokerList: any[] = [];
 
-  @action // 新增扑克牌方法
-  async createOrder(params: any) {
-    // const result:any = await createOrderApi(params);
-    for(let key in params){
-      if(key === sessionStorage.getItem('user')){
-        this.pokerList =  params[key]
-      } else {
-        continue;
-      }
-    // if (result.status === 200) {
-    //   // pokerList = result
-    //   this.off = true
-    //   // 过滤出当前用户的手牌
-    //   Object.keys(result.outPokerList).forEach((v:any) => {
-    //     if(v === '111'){
-    //       this.pokerList = result.outPokerList[v]
-    //     }
-    //   })
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-  }}
+  @action // 保存玩家扑克牌
+  async saveUserPoker(params: any) {
+    Object.keys(params.outPokerList).forEach((item: any) => {
+      if (item !== sessionStorage.getItem("user") && !this.pokerList.find((v:any)=> v.key === item))
+        this.pokerList.push({
+          key: item,
+          value: params.outPokerList[item],
+          name: item
+        });
+    });
+  }
 
   @action // 清除当前房间记录的扑克牌
-  async clearPokerList(){
-    this.pokerList = []
-    this.off = false
+  async clearPokerList() {
+    this.pokerList = [];
+    this.off = false;
   }
 }

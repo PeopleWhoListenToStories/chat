@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState  } from "react";
-import {useHistory} from 'react-router-dom';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import useStore from "../../context/useStore";
-import socket from "../../utils/socket"
+import socket from "../../utils/socket";
 
-import {Toast} from "antd-mobile"
+import { Toast } from "antd-mobile";
 
 const Login: React.FC = () => {
   const [userOrder, setUserOrder] = useState<string>("666");
   const [pwdOrder, setPwdOrder] = useState<string>("admin");
 
-  const {Login} = useStore()
-  const history = useHistory()
-  sessionStorage.removeItem('user')
+  const { Login } = useStore();
+  const history = useHistory();
+  sessionStorage.removeItem("user");
 
   function changeText(e: any) {
     if (e.target.name === "userOrder") {
@@ -25,21 +25,17 @@ const Login: React.FC = () => {
     }
   }
 
-  function clickLogin(){
-    if(userOrder !== '' &&  pwdOrder !== ''){
-      if(Login.LoginUser({userOrder,pwdOrder})){
-        Toast.info('登录成功')
-        sessionStorage.setItem('user',userOrder)
-        socket.emit("userLogin", {user_id:userOrder} )
+  async function clickLogin() {
+    if (userOrder !== "" && pwdOrder !== "") {
+      const {status} = await Login.LoginUser({ userOrder, pwdOrder })
+      if (status === 200) {
         history.push({
           pathname: "/home",
-          state: {id: userOrder }
-          });
-      }else{
-        Toast.info('登录失败')
+          state: { id: userOrder },
+        });
       }
-    }else{
-      Toast.info('请输入完善的用户信息')
+    } else {
+      Toast.info("请输入完善的用户信息");
     }
   }
   return (
@@ -68,7 +64,13 @@ const Login: React.FC = () => {
           />
         </li>
         <li>
-          <input type="button" value="登录" onClick={()=>{clickLogin()}}/>
+          <input
+            type="button"
+            value="登录"
+            onClick={() => {
+              clickLogin();
+            }}
+          />
         </li>
       </ul>
     </LoginWrapper>

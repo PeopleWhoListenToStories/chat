@@ -8,8 +8,6 @@ const instance = axios.create({
   timeout: 1000,
   // baseURL: 'http://120.53.2.185'
   // baseURL: process.env.NODE_ENV === 'production' ? 'https://exam.jasonandjay.com/' : 'http://120.53.2.185'
-  baseURL: 'http://120.53.2.185'
-
 })
 
 instance.interceptors.request.use((request: any) => {

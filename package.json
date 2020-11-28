@@ -76,5 +76,6 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "proxy":"http://127.0.0.1:7001"
 }

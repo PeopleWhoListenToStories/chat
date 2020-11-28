@@ -7,7 +7,7 @@ import useStore from '../context/useStore'
 import { isConstructorDeclaration } from 'typescript';
 
 // 登录白名单
-const whileList = ['/login', '/main', '/NoFound', 'NoServer']
+const whileList = ['/login', '/', '/NoFound', 'NoServer']
 
 interface Iprops {
   routes: IRouerItem[]
@@ -25,17 +25,20 @@ const RouterView: React.FC<Iprops> = (props) => {
         }
         return <Route key={item.path} path={item.path} render={(props) => {
           let isPath = props.match.path;
-          console.log(Login.userInfo && !Object.keys(Login.userInfo).length)
+          // 用户登录拦截
+          if (!whileList.includes(isPath) && !sessionStorage.getItem('token')) {
+            props.history.replace(`/login?redirect=${encodeURIComponent(isPath)}`);
+          }
+          // if(!Login.userInfo.user_id){
+          //    props.history.replace(`/login?redirect=${encodeURIComponent(isPath)}`)
+          // }
           if(Login.userInfo && !Object.keys(Login.userInfo).length){
             const user = sessionStorage.getItem('user')
             if(user){
               Login.getUserInfo({user:user})
             }
-          }
-          // 用户登录拦截
-          // if (!whileList.includes(isPath) && !getCookie('token')) {
-          //   props.history.replace(`/login?redirect=${encodeURIComponent(isPath)}`);
-          // }
+          } 
+
 
           // 获取不到用户信息就重新获取
           // if (getCookie('token') && !Object.keys(MainStore.user_info).length) {

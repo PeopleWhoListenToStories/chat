@@ -1,4 +1,4 @@
-import React, { useEffect, useState,Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useObserver } from "mobx-react-lite";
@@ -32,7 +32,6 @@ const Main: React.FC = (props: any) => {
     });
     socket.on("userLoginRes", (res: any) => {
       console.log(res, "res");
-      Toast.info(res.msg);
     });
   });
   const data1 = Array.from(new Array(9)).map(() => ({
@@ -41,8 +40,16 @@ const Main: React.FC = (props: any) => {
   }));
 
   function ClickToPoker(id: number | string) {
-    socket.emit("setRoomId", { user_id: Login.userInfo.user_id, room_id: id });
-    history.push("/poker/" + id);
+    const ishas = roomList.find((item: any) => item.room_id === id);
+    if (ishas && ishas.isFull) {
+      Toast.info("此房间玩家已满 请选择其他房间");
+    } else if (ishas && !ishas.isFull) {
+      socket.emit("setRoomId", {
+        user_id: Login.userInfo.user_id,
+        room_id: id,
+      });
+      history.push("/poker/" + id);
+    }
   }
   return useObserver(() => (
     <MainWrapper className="Main">
@@ -67,7 +74,11 @@ const Main: React.FC = (props: any) => {
                 alt=""
               />
               <div
-                style={{ color: "#888", fontSize: "14px", marginTop: "0.12rem" }}
+                style={{
+                  color: "#888",
+                  fontSize: "14px",
+                  marginTop: "0.12rem",
+                }}
               >
                 <span>{dataItem.name}</span>
               </div>

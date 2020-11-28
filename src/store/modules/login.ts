@@ -1,5 +1,7 @@
 import { action, observable } from "mobx";
 import { LoginApi, getUserInfoApi } from "../../api/index";
+import { Toast } from "antd-mobile";
+import socket from "../../utils/socket";
 
 export default class Login {
   @observable off: boolean = false;
@@ -7,18 +9,22 @@ export default class Login {
 
   @action
   async LoginUser(params: any) {
-    const result = await LoginApi(params);
+    const result: any = await LoginApi(params);
     if (result.status === 200) {
-      return true;
+      Toast.info('welcome to home ' + result.user_name  );
+      sessionStorage.setItem("user", params.userOrder);
+      sessionStorage.setItem("token", result.token);
+      socket.emit("userLogin", { user_id: params.userOrder });
     } else {
-      return false;
+      Toast.info("登录失败");
     }
+    return result;
   }
   @action
   async getUserInfo(params: any) {
-    const result:any = await getUserInfoApi(params);
-    if(result.status === 200){
-      this.userInfo = result.info
+    const result: any = await getUserInfoApi(params);
+    if (result.status === 200) {
+      this.userInfo = result.info;
     }
   }
 }
