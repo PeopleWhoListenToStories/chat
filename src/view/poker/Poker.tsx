@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-sequences */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { useObserver } from "mobx-react-lite";
@@ -20,6 +20,7 @@ const Poker: React.FC = (props: any) => {
   const [exitOff, setExitOff] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const { Poker, Login } = useStore();
+  console.log(Poker,'Poker')
   function onLeftClick() {
     // 游戏中判断推出
     if (exitOff) {
@@ -67,20 +68,24 @@ const Poker: React.FC = (props: any) => {
         onLeftClick={() => onLeftClick()}
         title={"房间" + props?.match.params.id}
       />
-      <LeftUserWrapper>
-        {Poker.pokerList.map((item: any, index) => {
-          if (index === 0 || index === 1) {
-            return <Play title={item.name + "√"} data={item.value} />;
-          }
-        })}
-      </LeftUserWrapper>
-      <RightUserWrapper>
-        {Poker.pokerList.map((item: any, index) => {
-          if (index === 2 || index === 3) {
-            return <Play title={item.name + "√"} data={item.value} />;
-          }
-        })}
-      </RightUserWrapper>
+      {start && (
+        <Fragment>
+          <LeftUserWrapper>
+            {Poker.pokerList.map((item: any, index) => {
+              if (index === 0 || index === 1) {
+                return <Play title={item.name + "√"} data={item.value} />;
+              }
+            })}
+          </LeftUserWrapper>
+          <RightUserWrapper>
+            {Poker.pokerList.map((item: any, index) => {
+              if (index === 2 || index === 3) {
+                return <Play title={item.name + "√"} data={item.value} />;
+              }
+            })}
+          </RightUserWrapper>
+        </Fragment>
+      )}
       <UserViewCom />
       {start ? <Filling /> : <></>}
       <Modal

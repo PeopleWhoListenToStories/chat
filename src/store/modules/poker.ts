@@ -8,6 +8,7 @@ export default class Poker {
 
   @action // 保存玩家扑克牌
   async saveUserPoker(params: any) {
+    console.log(params,"params=>>>>>>>>>>>before")
     Object.keys(params.outPokerList).forEach((item: any) => {
       if (item !== sessionStorage.getItem("user") && !this.pokerList.find((v:any)=> v.key === item))
         this.pokerList.push({
@@ -16,6 +17,7 @@ export default class Poker {
           name: item
         });
     });
+    console.log(this.pokerList,"params=>>>>>>>>>>>after")
   }
 
   @action // 清除当前房间记录的扑克牌
